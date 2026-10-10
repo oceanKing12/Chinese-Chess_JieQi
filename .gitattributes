@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------------------
+# 统一换行符：**仓库里一律存 LF**。
+#
+# 为什么需要这个文件：Windows 上的 Git 默认 ``core.autocrlf=true``，
+# 检出时把 LF 换成 CRLF、提交时再换回来。如果不同机器/不同设置的人一起用，
+# 结果是"明明没改代码，``git status`` 却显示几十个文件被修改"——
+# 每次 diff 都淹没在换行符噪音里，真正的改动反而看不见。
+#
+# 这里显式规定：文本文件在**仓库里**永远是 LF，检出时也用 LF。
+# 于是不管谁的 ``core.autocrlf`` 是什么，diff 都只反映真实改动。
+# ---------------------------------------------------------------------------
+
+# 默认：自动识别文本文件，仓库内存 LF，检出时也用 LF
+* text=auto eol=lf
+
+# ---- 明确是文本的（顺便让 GitHub 语言统计更准）----
+*.py    text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.toml  text eol=lf
+*.cfg   text eol=lf
+*.ini   text eol=lf
+.gitignore      text eol=lf
+.gitattributes  text eol=lf
+LICENSE         text eol=lf
+requirements.txt text eol=lf
+
+# ---- 这些是**二进制**，绝不能被换行符转换搞坏 ----
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.ttf   binary
+*.ttc   binary
+*.zip   binary
+*.exe   binary
+*.dll   binary
+*.pyc   binary
+
+# ---- GitHub 语言统计：别把文档/测试/开发脚本算成项目主体 ----
+stage/Game/AI优化说明.md  linguist-documentation
+_bench/**                 linguist-vendored
+docs/**                   linguist-documentation

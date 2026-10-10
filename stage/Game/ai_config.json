@@ -1,0 +1,54 @@
+{
+  "_说明": "揭棋 AI 配置。ai 段控制搜索；record 段控制棋谱保存；llm 段控制可选的大模型顾问（默认关闭）。修改后重启游戏生效。",
+  "ai": {
+    "_难度可选": [
+      "easy",
+      "normal",
+      "hard",
+      "expert"
+    ],
+    "difficulty": "normal",
+    "_time_limit": "每步思考秒数；改成 null 表示使用难度预设",
+    "time_limit": 2.0,
+    "_samples": "暗子身份的采样个数（不完全信息搜索）。实测（32 局同时间自对弈 A/B：samples=1 vs 2）1 采样胜率 77%（p≈0.006），而两者实际搜索深度几乎相同（3.5 vs 3.4）——因为时间被分摊到两次独立定局化上并不会搜得更深，而\"跨不同世界取平均\"会稀释只在部分世界成立的战术。所以默认 1：把全部时间给一次更深的搜索。想让 AI 更保守可以调 2~3 并把 variance_penalty 打开。",
+    "samples": 1,
+    "_max_depth": "最大搜索深度；null = 用难度预设（通常 64，即不限）",
+    "max_depth": null,
+    "_seed": "随机种子；null = 每步随机，便于调试时可固定",
+    "seed": null,
+    "_emit_decision_tree": "是否写出 decision_tree.json（tree.html / 1.py 可视化用）",
+    "emit_decision_tree": true,
+    "decision_tree_path": "decision_tree.json",
+    "_verbose": "是否打印每一步候选着法的详细分数",
+    "verbose": false,
+    "_use_hidden_captures": "是否使用被吃暗子的真实身份。通行规则下被吃的暗子仍然未知，默认 false 以保证 AI 与人类信息对称；改成 true 会让 AI 占便宜。",
+    "use_hidden_captures": false,
+    "_weights": "可覆盖评估权重，例如 {\"hanging\": 0.35, \"tempo\": 8}",
+    "weights": {},
+    "_reveal_weights": "揭棋特有的翻子搜索加成（见 jieqi/reveal.py）。当前为关闭（空 dict）——这是标定的结论，不是没做。seed 8800 上 base15/phase20 拿到 0.818 [0.52,0.95]，但换到新局集 seed 13570 打 48 局只有 0.433 [0.27,0.61]，没有复现（小样本过拟合）；base15/phase20/unknown30 同批 0.429 [0.28,0.59]。两组都跨 0.5，都没有显著好过关闭，所以保持空：宁可不要这个加成，也不留没验证过的权重。将来要再试，先用 --batch 在新局集上量，按「区间下界大于 0.5」判定。",
+    "reveal_weights": {},
+    "_reveal_quiet_weights": "只作用于不吃子的翻子着法。保持为空：quiet_safety 有已证实的误判（test_reveal.py 里两条 expectedFailure 标着），修好之前不能用。",
+    "reveal_quiet_weights": {}
+  },
+  "record": {
+    "_说明": "棋谱（复盘 / 训练数据）相关设置。",
+    "_auto_save": "对局结束（分胜负或判和）时自动把棋谱保存到 Game/records/，默认开启。关掉之后仍可随时按「导出棋谱」或 S 键手动保存。",
+    "auto_save": true
+  },
+  "llm": {
+    "_说明": "可选的大模型顾问。enabled=true 且填好 api_key 后，AI 每步会附带一段中文点评。",
+    "enabled": false,
+    "base_url": "https://api.openai.com/v1",
+    "api_key": "",
+    "api_key_env": "OPENAI_API_KEY",
+    "model": "gpt-4o-mini",
+    "timeout": 20.0,
+    "temperature": 0.2,
+    "max_tokens": 700,
+    "mode": "explain",
+    "blend_weight": 0.0,
+    "_comment_validation": "点评归属质检：发现模型把红黑/明暗说反时自动改判，改不了就定向重问一次。默认必须开着，关掉等于放任幻觉。",
+    "comment_validation": true,
+    "extra_headers": {}
+  }
+}

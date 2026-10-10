@@ -1,0 +1,19 @@
+{
+  "record": {
+    "auto_save": true
+  },
+  "llm": {
+    "enabled": false,
+    "base_url": "https://api.openai.com/v1",
+    "api_key": "",
+    "api_key_env": "OPENAI_API_KEY",
+    "model": "gpt-4o-mini",
+    "timeout": 20.0,
+    "temperature": 0.2,
+    "max_tokens": 700,
+    "mode": "explain",
+    "blend_weight": 0.0,
+    "comment_validation": true,
+    "extra_headers": {}
+  }
+}

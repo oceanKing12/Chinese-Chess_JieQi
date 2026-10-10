@@ -1,0 +1,79 @@
+# ---------------------------------------------------------------------------
+# 揭棋 AI —— Git 忽略规则
+#
+# 目标：仓库里**只有源码、棋子图、文档、测试与开发脚本**。
+# 凡是"跑起来就会变"或"属于我个人"的东西都不进版本库。
+# ---------------------------------------------------------------------------
+
+# ---- Python 缓存与构建产物 ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+
+# ---- 测试与静态检查缓存 ----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 对局记录（**个人数据，绝不发布**）----
+# 这些是你自己下过的棋，含完整着法历史；每条记录还有一份 .txt 棋谱。
+#   stage/Game/records/         当前棋谱
+#   stage/Game/records_archive/ 归档棋谱
+# 目录本身不留，程序首次保存时会自动新建。
+stage/Game/records/
+stage/Game/records_archive/
+records/
+records_archive/
+*.record.json
+
+# ---- 运行时产物 ----
+# 引擎每走一步都会重写它（tree.html / 1.py 用来看搜索树）
+decision_tree.json
+stage/decision_tree.json
+stage/Game/decision_tree.json
+# 自检脚本的临时配置
+stage/_run/
+_run/
+# 渲染预览图（可用 tools/ui_preview.py 随时重新生成）
+stage/_ui_preview/
+_ui_preview/
+
+# ---- 本地配置（**含 API Key，绝不发布**）----
+# 仓库里保留 ai_config.json（默认值，key 为空）与 ai_config.llm.example.json；
+# 你自己那份填了 key 的配置请留在本地。
+ai_config.local.json
+*.local.json
+.env
+.env.*
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+*~
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---- 与揭棋无关的同期目录（同一个文件夹下的另外的项目/备份）----
+#   ai-sr/      AI 去水印 / 图像修复（含 262MB 模型）
+#   wallpaper/  壁纸与水印脚本
+#   _backup/    删功能前的备份
+ai-sr/
+wallpaper/
+_backup/
+
+# ---- 我写给你个人的说明（没必要进公开仓库）----
+_发布到GitHub教程.md
